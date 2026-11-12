@@ -1,0 +1,11 @@
+candidate_pack/
+data/
+runs/
+checkpoints/
+outputs/
+hf_cache/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+PLAN.md
+.env
