@@ -65,12 +65,15 @@ EXPERIMENT_COLUMNS = ["run", "change", "train_rows", "dev_exact", "dev_field_acc
 
 def log_experiment(record):
     record = {**record, "timestamp": datetime.now().isoformat(timespec="seconds")}
-    new = not EXPERIMENTS_CSV.exists()
-    with open(EXPERIMENTS_CSV, "a", newline="", encoding="utf-8") as f:
+    rows = []
+    if EXPERIMENTS_CSV.exists():
+        with open(EXPERIMENTS_CSV, newline="", encoding="utf-8") as f:
+            rows = [r for r in csv.DictReader(f) if r["run"] != record["run"]]
+    EXPERIMENTS_CSV.parent.mkdir(parents=True, exist_ok=True)
+    with open(EXPERIMENTS_CSV, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=EXPERIMENT_COLUMNS, extrasaction="ignore")
-        if new:
-            w.writeheader()
-        w.writerow(record)
+        w.writeheader()
+        w.writerows(rows + [record])
     return record
 
 

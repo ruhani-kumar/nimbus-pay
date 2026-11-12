@@ -25,9 +25,12 @@ if IN_COLAB:
     missing = [f"{p}=={v}" for p, v in PINS.items() if installed(p) != v]
     if missing:
         subprocess.run([sys.executable, "-m", "pip", "install", "-q", *missing], check=True)
+    if installed("torchao"):
+        subprocess.run([sys.executable, "-m", "pip", "uninstall", "-y", "-q", "torchao"], check=True)
 
 print("colab:", IN_COLAB)
 print(f"torch=={installed('torch')}", "" if (installed("torch") or "").startswith(EXPECTED_TORCH) else f"(expected {EXPECTED_TORCH})")
 for pkg, want in PINS.items():
     have = installed(pkg)
     print(f"{pkg}=={have}", "" if have == want else f"(expected {want})")
+print("torchao:", installed("torchao") or "not installed (Colab's preinstalled 0.10 breaks peft's LoRA layer dispatch)")
