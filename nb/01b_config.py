@@ -8,6 +8,8 @@ from pathlib import Path
 
 import numpy as np
 
+NOTEBOOK_START = time.time()
+
 if IN_COLAB:
     from google.colab import drive
     drive.mount("/content/drive")

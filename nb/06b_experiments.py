@@ -1,4 +1,4 @@
-RUN_ALL_EXPERIMENTS = True
+RUN_ALL_EXPERIMENTS = False
 
 train_e1 = [r for r in train_noleak if r["id"] not in findings["label_not_json"]]
 EXPERIMENTS = [
