@@ -28,4 +28,6 @@ The labeller is used only to build training data and is never part of inference.
 
 **Dev stress set.** The same seven transformations applied to dev tickets give a second benchmark of 175 rows. It is used only for evaluation and never for training or tuning. It shows how each model holds up on the kinds of variation the test set is said to contain, and it is scored per transformation through the scorer's `slice` field.
 
+A sixth run, **E6**, comes out of the error analysis and is in section 6.
+
 **Running cost.** E1–E5 together take about 2.5 hours on a T4. With `RUN_ALL_EXPERIMENTS = False` the notebook shows the logged results from `results/` instead of retraining, so a fresh top-to-bottom run stays under the 3-hour limit. All runs are saved, so a Colab disconnect only costs the run in progress.

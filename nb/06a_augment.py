@@ -82,7 +82,7 @@ def aug_txn_id(row, body, label, rng):
     if not label["txn_id"] or len(matches) != 1:
         return None
     m = matches[0]
-    end = m.end() - (len(m.group(1)) - len(m.group(1).rstrip(" -")))
+    end = m.end() - (len(m.group(1)) - len(m.group(1).rstrip(" \t\r\n-")))
     d = label["txn_id"][2:]
     new = rng.choice([f"np {d[:5]} {d[5:]}", f"NP-{d}", f"N P {d[:4]} {d[4:7]} {d[7:]}", f"np{d}", f"NP#{d}", f"Np-{d[:3]}-{d[3:6]}-{d[6:]}"])
     return body[:m.start()] + new + body[end:], label
