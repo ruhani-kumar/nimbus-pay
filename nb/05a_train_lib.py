@@ -148,10 +148,25 @@ def train_lora(name, rows, rank=16, epochs=3, lr=2e-4, four_bit=False, rows_per_
     return meta
 
 
-def train_and_eval(name, rows, change, four_bit=False, model_id=None, force=False, **train_kwargs):
+def stress_eval(name, model, stress, force=False):
+    path = RUNS / name / "stress_predictions.jsonl"
+    if path.exists() and not force:
+        preds = load_jsonl(path)
+    else:
+        preds = generate_predictions(model, stress, desc=f"{name} stress")
+        save_jsonl(preds, path)
+    res = evaluate(stress, preds)
+    (RUNS / name / "stress_scores.json").write_text(json.dumps(res, indent=1), encoding="utf-8")
+    print(f"{name} on the dev stress set: exact {res['all']['exact_match']:.1%}, fields {res['all']['mean_field_acc']:.1%}")
+    return {"stress_exact": round(res["all"]["exact_match"], 4), "stress_field_acc": round(res["all"]["mean_field_acc"], 4)}
+
+
+def train_and_eval(name, rows, change, four_bit=False, model_id=None, force=False, stress=None, **train_kwargs):
     meta = train_lora(name, rows, four_bit=four_bit, model_id=model_id, force=force, **train_kwargs)
     model = load_model(model_id or BASE_MODEL, four_bit=four_bit, adapter=RUNS / name / "adapter")
     extra = {k: meta[k] for k in ["train_rows", "peak_gpu_gb", "train_minutes", "trainable_params"]}
+    if stress is not None:
+        extra.update(stress_eval(name, model, stress, force=force))
     preds, res = run_eval(name, model, change=change, extra=extra, force=force)
     del model
     free_memory()
@@ -161,7 +176,7 @@ def train_and_eval(name, rows, change, four_bit=False, model_id=None, force=Fals
 def plot_training(names, path):
     fig, axes = plt.subplots(1, 2, figsize=(11, 3.5))
     for name in names:
-        log = pd.read_csv(RUNS / name / "train_log.csv")
+        log = pd.read_csv(RESULTS / name / "train_log.csv")
         axes[0].plot(log["step"], log["loss"].rolling(5, min_periods=1).mean(), label=name)
         ends = log.dropna(subset=["dev_loss"])
         axes[1].plot(ends["epoch"], ends["dev_loss"], marker="o", label=name)

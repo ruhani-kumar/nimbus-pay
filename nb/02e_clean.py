@@ -62,7 +62,7 @@ ax.set_xlabel("training rows")
 ax.set_title(f"Where the noise was: {sum(log.action == 'drop')} rows dropped (red), {sum(log.action == 'fix')} rows fixed (blue)")
 ax.spines[["top", "right"]].set_visible(False)
 plt.tight_layout()
-plt.savefig(RUNS / "audit_noise.png", dpi=150)
+plt.savefig(RESULTS / "audit_noise.png", dpi=150)
 plt.show()
 
 print(f"train_clean: {len(train_clean)} rows -> {CLEAN_DIR / 'train_clean.jsonl'}")

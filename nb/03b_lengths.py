@@ -43,5 +43,5 @@ axes[1].set_title("Answer length")
 for ax in axes:
     ax.spines[["top", "right"]].set_visible(False)
 plt.tight_layout()
-plt.savefig(RUNS / "token_lengths.png", dpi=150)
+plt.savefig(RESULTS / "token_lengths.png", dpi=150)
 plt.show()

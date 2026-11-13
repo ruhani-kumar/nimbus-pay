@@ -1,0 +1,14 @@
+{
+ "run": "E5_aug_lora_r16",
+ "train_rows": 1916,
+ "trainable_params": 29933568,
+ "peak_gpu_gb": 10.35,
+ "train_minutes": 33.1,
+ "rank": 16,
+ "epochs": 3,
+ "lr": 0.0002,
+ "four_bit": false,
+ "rows_per_step": 16,
+ "steps": 360,
+ "adapter_mb": 59.9
+}

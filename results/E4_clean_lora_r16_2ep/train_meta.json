@@ -1,0 +1,14 @@
+{
+ "run": "E4_clean_lora_r16_2ep",
+ "train_rows": 1296,
+ "trainable_params": 29933568,
+ "peak_gpu_gb": 10.34,
+ "train_minutes": 15.9,
+ "rank": 16,
+ "epochs": 2,
+ "lr": 0.0002,
+ "four_bit": false,
+ "rows_per_step": 16,
+ "steps": 162,
+ "adapter_mb": 59.9
+}

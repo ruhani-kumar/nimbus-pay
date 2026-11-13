@@ -18,7 +18,9 @@ else:
 PACK = ROOT / "candidate_pack"
 DATA = PACK / "data"
 RUNS = ROOT / "runs"
-RUNS.mkdir(parents=True, exist_ok=True)
+RESULTS = ROOT / "results"
+for d in (RUNS, RESULTS):
+    d.mkdir(parents=True, exist_ok=True)
 
 BASE_MODEL = "Qwen/Qwen2.5-3B-Instruct"
 SEED = 42
@@ -37,4 +39,5 @@ for p in [DATA / "train.jsonl", DATA / "dev.jsonl", DATA / "test_inputs.jsonl", 
     assert p.exists(), f"missing {p}"
 
 print("root:", ROOT)
-print("runs:", RUNS)
+print("runs (adapters, large files):", RUNS)
+print("results (small files committed to the repo):", RESULTS)

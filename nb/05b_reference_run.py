@@ -12,5 +12,5 @@ print(f"LM head runs on {sum(train_targets) / sum(train_lengths):.1%} of token p
 
 REFERENCE = {"rank": 16, "epochs": 3, "lr": 2e-4, "rows_per_step": 16}
 e2_meta, e2_preds, e2 = train_and_eval("E2_clean_lora_r16", train_clean, change="cleaned train, fp16 base, LoRA r16 (reference)", **REFERENCE)
-plot_training(["E2_clean_lora_r16"], RUNS / "training_curves_reference.png")
+plot_training(["E2_clean_lora_r16"], RESULTS / "training_curves_reference.png")
 print(experiments_table().to_string())

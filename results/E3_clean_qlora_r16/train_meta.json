@@ -1,0 +1,14 @@
+{
+ "run": "E3_clean_qlora_r16",
+ "train_rows": 1296,
+ "trainable_params": 29933568,
+ "peak_gpu_gb": 8.06,
+ "train_minutes": 28.7,
+ "rank": 16,
+ "epochs": 3,
+ "lr": 0.0002,
+ "four_bit": true,
+ "rows_per_step": 16,
+ "steps": 243,
+ "adapter_mb": 59.9
+}

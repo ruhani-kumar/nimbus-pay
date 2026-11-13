@@ -58,8 +58,9 @@ def show_scores(res, prefixes=None):
     print("per-field accuracy:", {k: round(v, 3) for k, v in res["all"]["fields"].items()})
 
 
-EXPERIMENTS_CSV = RUNS / "experiments.csv"
+EXPERIMENTS_CSV = RESULTS / "experiments.csv"
 EXPERIMENT_COLUMNS = ["run", "change", "train_rows", "dev_exact", "dev_field_acc", "dev_json_valid",
+                      "stress_exact", "stress_field_acc",
                       "peak_gpu_gb", "train_minutes", "trainable_params", "timestamp"]
 
 
@@ -68,7 +69,10 @@ def log_experiment(record):
     rows = []
     if EXPERIMENTS_CSV.exists():
         with open(EXPERIMENTS_CSV, newline="", encoding="utf-8") as f:
-            rows = [r for r in csv.DictReader(f) if r["run"] != record["run"]]
+            rows = list(csv.DictReader(f))
+    old = next((r for r in rows if r["run"] == record["run"]), {})
+    record = {**old, **record}
+    rows = [r for r in rows if r["run"] != record["run"]]
     EXPERIMENTS_CSV.parent.mkdir(parents=True, exist_ok=True)
     with open(EXPERIMENTS_CSV, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=EXPERIMENT_COLUMNS, extrasaction="ignore")

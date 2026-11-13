@@ -1,0 +1,8 @@
+run,change,train_rows,dev_exact,dev_field_acc,dev_json_valid,stress_exact,stress_field_acc,peak_gpu_gb,train_minutes,trainable_params,timestamp
+B1_base_fixed_prompt,"base model, fixed prompt, no fine-tuning",,0.0,0.0,0.005,,,,,,2026-11-13T04:03:48
+B2_base_rules_in_prompt,"base model, SCHEMA.md in system prompt",,0.265,0.825,1.0,,,,,,2026-11-13T04:03:51
+E1_raw_lora_r16,"raw train (leaks and unparsable labels removed, nothing fixed)",1383,0.915,0.9856,1.0,0.7371,0.9493,10.4,25.3,29933568,2026-11-13T04:33:29
+E2_clean_lora_r16,"cleaned train, fp16 base, LoRA r16 (reference)",1296,0.92,0.9831,1.0,0.7886,0.9529,10.34,24.0,29933568,2026-11-13T04:35:12
+E3_clean_qlora_r16,"cleaned train, 4-bit NF4 base (QLoRA)",1296,0.945,0.9888,1.0,0.7886,0.9543,8.06,28.7,29933568,2026-11-13T05:08:08
+E4_clean_lora_r16_2ep,"cleaned train, 2 epochs instead of 3",1296,0.865,0.9738,1.0,0.7086,0.945,10.34,15.9,29933568,2026-11-13T05:28:38
+E5_aug_lora_r16,cleaned train + 620 rule-checked synthetic rows,1916,0.955,0.9912,1.0,0.9314,0.9886,10.35,33.1,29933568,2026-11-13T06:05:29

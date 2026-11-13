@@ -1,4 +1,5 @@
 import gc
+import shutil
 from transformers import AutoModelForCausalLM, BitsAndBytesConfig
 
 DTYPE = torch.bfloat16 if torch.cuda.is_available() and torch.cuda.get_device_capability(0)[0] >= 8 else torch.float16
@@ -69,6 +70,17 @@ def effective_generation_config(model):
     return {k: cfg.get(k) for k in keep}
 
 
+SMALL_FILES = ["dev_predictions.jsonl", "dev_scores.json", "stress_predictions.jsonl", "stress_scores.json", "train_log.csv", "train_meta.json"]
+
+
+def export_run(name):
+    for fname in SMALL_FILES:
+        src = RUNS / name / fname
+        if src.exists():
+            (RESULTS / name).mkdir(parents=True, exist_ok=True)
+            shutil.copy(src, RESULTS / name / fname)
+
+
 def run_eval(name, model, rows=None, system=None, change="", extra=None, force=False, **gen):
     rows = rows if rows is not None else dev
     out_dir = RUNS / name
@@ -89,4 +101,5 @@ def run_eval(name, model, rows=None, system=None, change="", extra=None, force=F
         "dev_json_valid": round(res["all"]["json_valid"], 4),
         **(extra or {}),
     })
+    export_run(name)
     return preds, res
